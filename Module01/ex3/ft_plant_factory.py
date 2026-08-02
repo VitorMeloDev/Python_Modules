@@ -1,20 +1,20 @@
 class Plant:
-    def __init__(self, name, height, age):
+    def __init__(self, name: str, height: float, age: int) -> None:
         self.name = name
-        self.height = height
-        self.age = age
+        self._height = height
+        self._age = age
         print(
             f"Created: {self.name}: "
-            f"{self.height:.1f}cm, {self.age} days old")
+            f"{self._height:.1f}cm, {self._age} days old")
 
-    def show(self):
-        print(f"{self.name}: {self.height:.1f}cm, {self.age} days old")
+    def show(self) -> None:
+        print(f"{self.name}: {self._height:.1f}cm, {self._age} days old")
 
-    def grow(self):
-        self.height += self.height * 0.03
+    def grow(self) -> None:
+        self._height += self._height * 0.03
 
-    def age(self):
-        self.age += 1
+    def age(self) -> None:
+        self._age += 1
 
 
 if __name__ == "__main__":
