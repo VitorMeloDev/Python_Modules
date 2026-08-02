@@ -3,13 +3,17 @@ class Plant:
         self.name = name
         self.height = height
         self.age = age
-        print(f"Created: {self.name}: {self.height:.1f}cm, {self.age} days old")
+        print(
+            f"Created: {self.name}: "
+            f"{self.height:.1f}cm, {self.age} days old")
 
     def show(self):
         print(f"{self.name}: {self.height:.1f}cm, {self.age} days old")
 
     def grow(self):
         self.height += self.height * 0.03
+
+    def age(self):
         self.age += 1
 
 

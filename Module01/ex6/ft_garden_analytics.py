@@ -14,7 +14,11 @@ class PlantStatistics:
         self._count_show += 1
 
     def show(self):
-        print(f"Stats: {self._count_grow} grow,{self._count_age} age, {self._count_show} show")
+        print(
+            f"Stats: {self._count_grow} "
+            f"grow,{self._count_age} age, {self._count_show} show"
+        )
+
 
 class Plant:
     def __init__(self, name, height, age):
@@ -69,6 +73,7 @@ class Plant:
     def anonymous(cls):
         return cls("Unknown plant", 0.0, 0)
 
+
 class Flower(Plant):
     def __init__(self, name, height, age, color):
         super().__init__(name, height, age)
@@ -81,7 +86,11 @@ class Flower(Plant):
 
     def show(self):
         super().show()
-        print(f"Color: {self.color}, Blooming: {'Yes' if self.blooming else 'No'}")
+        print(
+            f"Color: {self.color}, "
+            f"Blooming: {'Yes' if self.blooming else 'No'}"
+        )
+
 
 class Seed(Flower):
     def __init__(self, name, height, age, color):
@@ -110,7 +119,7 @@ class Tree(Plant):
         def show(self):
             super().show()
             print(f" {self._count_shade} shade")
-        
+
     def __init__(self, name, height, age, trunk_diameter):
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
@@ -119,11 +128,15 @@ class Tree(Plant):
     def produce_shade(self):
         self._stats.increment_shade()
         print(f"[asking the {self.name} to produce shade]")
-        print(f"Tree {self.name} now produces a shade of {self._height:.1f}cm long and {self.trunk_diameter:.1f}cm wide")
+        print(
+            f"Tree {self.name} now produces a shade of "
+            f"{self._height:.1f}cm long and {self.trunk_diameter:.1f}cm wide"
+        )
 
     def show(self):
         super().show()
         print(f"Trunk diameter: {self.trunk_diameter:.1f}cm")
+
 
 class Vegetable(Plant):
     def __init__(self, name, height, age, harvest_season):
@@ -140,9 +153,11 @@ class Vegetable(Plant):
         print(f"Harvest season: {self.harvest_season}")
         print(f"Nutritional value: {self.nutritional_value}")
 
+
 def display_statistics(plant):
     print(f"[statistics for {plant.name}]")
     plant._stats.show()
+
 
 if __name__ == "__main__":
     print("=== Garden statistics ===")

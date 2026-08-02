@@ -7,13 +7,18 @@ class Plant:
         self._height = height
         if height < 0:
             self._height = 0.0
-        print(f"Created: {self.name}: {self._height:.1f}cm, {self._age} days old")
+        print(
+            f"Created: {self.name}: "
+            f"{self._height:.1f}cm, {self._age} days old"
+        )
 
     def __str__(self):
         return f"{self.name}: {self._height:.1f}cm, {self._age} days old"
 
     def grow(self):
         self.set_height(self._height + self._height * 0.03)
+
+    def age(self):
         self.set_age(self._age + 1)
 
     def set_height(self, value):
@@ -37,6 +42,7 @@ class Plant:
 
     def get_age(self):
         return self._age
+
 
 if __name__ == "__main__":
     print("=== Garden Security System ===")
