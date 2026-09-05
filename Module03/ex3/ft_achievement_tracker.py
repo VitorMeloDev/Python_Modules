@@ -9,7 +9,7 @@ def gen_player_achievement(achievements):
 if __name__ == "__main__":
     print("=== Welcome to the Achievement Tracker! ===")
 
-    achievements = [
+    achievements = {
         "First Blood",
         "Sharp Shooter",
         "Marathon Runner",
@@ -17,7 +17,7 @@ if __name__ == "__main__":
         "Puzzle Master",
         "Speed Demon",
         "Stealth Assassin",
-    ]
+    }
 
     all_achievements = set(achievements)
 
