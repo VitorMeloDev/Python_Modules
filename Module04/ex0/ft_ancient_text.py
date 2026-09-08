@@ -8,11 +8,11 @@ def process_file(file_name: str) -> None:
         file = open(file_name)
         content = file.read()
         print (content)
+        file.close()
     except FileNotFoundError as error:
         print(error)
     except OSError as error:
         print(error)
-    file.close()
     print("\n---")
     print(f"File '{file_name}' closed")
 
