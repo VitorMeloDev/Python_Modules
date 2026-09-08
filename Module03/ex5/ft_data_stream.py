@@ -41,7 +41,7 @@ def consume_event(
         event = random.choice(events)
         events.remove(event)
         yield event
-        
+
 
 players = ["Vitor", "Marcus", "João"]
 actions = ["Lutar", "Conversar", "Correr", "Cagar", "Fumar"]
