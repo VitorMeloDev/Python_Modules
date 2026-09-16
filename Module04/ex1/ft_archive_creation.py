@@ -8,10 +8,16 @@ def save_file(content: str) -> None:
     new_file = input("Enter new file name(or empty): ")
     if new_file:
         print(f"Saving data to '{new_file}'")
-        file = open(new_file, "w")
-        file.write(content)
-        file.close()
-        print(f"Data saved in file '{new_file}'.")
+
+        try:
+            file = open(new_file, "w")
+            file.write(content)
+            file.close()
+            print(f"Data saved in file '{new_file}'.")
+        except FileNotFoundError as error:
+                print(error)
+        except OSError as error:
+                print(error)
     else:
         print("Not saving data.")
 

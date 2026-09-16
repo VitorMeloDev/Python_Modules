@@ -1,7 +1,6 @@
 import sys
 import typing
 
-
 def save_file(content: str) -> None:
     print("Transform data:\n---")
     print(content)
@@ -52,7 +51,6 @@ def process_file(file_name: str) -> str:
         print(f"File '{file_name}' closed")
 
         return new_content
-
     except OSError as error:
         sys.stderr.write(
             f"[STDERR] Error opening file '{file_name}': {error}\n"
@@ -67,4 +65,6 @@ if __name__ == "__main__":
         sys.stderr.write("[STDERR] Error: Enter a name file\n")
     else:
         copy = process_file(sys.argv[1])
-        save_file(copy)
+
+        if len(copy) > 0:
+            save_file(copy)
