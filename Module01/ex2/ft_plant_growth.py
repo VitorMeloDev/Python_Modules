@@ -22,6 +22,7 @@ if __name__ == "__main__":
     growth = plant.height
     for i in range(1, 8):
         plant.grow()
+        plant.age()
         plant.show()
     growth = plant.height - growth
     print(f"Growth this week: {growth:.1f}cm")

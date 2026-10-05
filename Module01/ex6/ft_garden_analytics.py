@@ -120,7 +120,13 @@ class Tree(Plant):
             super().show()
             print(f" {self._count_shade} shade")
 
-    def __init__(self, name: str, height: float, age: int, trunk_diameter: float) -> None:
+    def __init__(
+        self,
+        name: str,
+        height: float,
+        age: int,
+        trunk_diameter: float
+    ) -> None:
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
         self._stats: Tree.TreeStatistics = Tree.TreeStatistics()
@@ -139,7 +145,13 @@ class Tree(Plant):
 
 
 class Vegetable(Plant):
-    def __init__(self, name: str, height: float, age: int, harvest_season: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        height: float,
+        age: int,
+        harvest_season: str
+    ) -> None:
         super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.nutritional_value = 0
