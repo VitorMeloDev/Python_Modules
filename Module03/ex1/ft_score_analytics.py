@@ -1,5 +1,6 @@
 import sys
 
+
 def process(numbers) -> None:
     print(f"Total players: {len(numbers)}")
     print(f"Total score: {sum(numbers)}")
@@ -8,9 +9,10 @@ def process(numbers) -> None:
     print(f"Low Score: {min(numbers)}")
     print(f"Score range: {max(numbers) - min(numbers)}")
 
-    
+
 def message() -> str:
-    return "No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ... <scoreN>"
+    return "No scores provided. Usage: " \
+        "python3 ft_score_analytics.py <score1> <score2> ... <scoreN>"
 
 
 if __name__ == "__main__":

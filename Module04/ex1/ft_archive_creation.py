@@ -1,5 +1,5 @@
 import sys
-from typing import IO
+
 
 def save_file(content: str) -> None:
     print("Transform data:\n---")
@@ -15,34 +15,32 @@ def save_file(content: str) -> None:
             file.close()
             print(f"Data saved in file '{new_file}'.")
         except FileNotFoundError as error:
-                print(error)
+            print(error)
         except OSError as error:
-                print(error)
+            print(error)
     else:
         print("Not saving data.")
 
 
 def process_file(file_name: str) -> str:
     print(f"Accessing file '{file_name}'\n---")
-
+    new_content = ""
     try:
         file = open(file_name)
         content = file.read()
         file.close()
-        print (content)
-        new_content = ""
+        print(content)
         file = open(file_name)
         for line in file:
-            new_content += line[:-1]+ "#\n"
+            new_content += line[:-1] + "#\n"
         print("\n---")
         print(f"File '{file_name}' closed")
         file.close()
-        return new_content
     except FileNotFoundError as error:
         print(error)
     except OSError as error:
         print(error)
-
+    return new_content
 
 
 if __name__ == "__main__":

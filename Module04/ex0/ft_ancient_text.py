@@ -1,5 +1,5 @@
 import sys
-from typing import IO
+
 
 def process_file(file_name: str) -> None:
     print(f"Accessing file '{file_name}'\n---")
@@ -7,7 +7,7 @@ def process_file(file_name: str) -> None:
     try:
         file = open(file_name)
         content = file.read()
-        print (content)
+        print(content)
         file.close()
     except FileNotFoundError as error:
         print(error)

@@ -1,5 +1,5 @@
 import sys
-import typing
+
 
 def save_file(content: str) -> None:
     print("Transform data:\n---")

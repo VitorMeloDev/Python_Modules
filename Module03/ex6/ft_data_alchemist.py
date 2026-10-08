@@ -25,5 +25,6 @@ if __name__ == "__main__":
     print(f"Score dict: {score}")
 
     avg = sum(score.values()) / len(score)
-    high_scores = {player: score for player, score in score.items() if score > avg}
+    high_scores = {player: score for player,
+                   score in score.items() if score > avg}
     print(f"High score: {high_scores}")

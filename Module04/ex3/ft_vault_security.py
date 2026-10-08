@@ -1,4 +1,8 @@
-def secure_archive(file_name: str, operation: str = "read", content: str = "") -> tuple[bool, str]:
+def secure_archive(
+        file_name: str,
+        operation: str = "read",
+        content: str = ""
+        ) -> tuple[bool, str]:
     if operation == "read":
         try:
             with open(file_name, "r") as file:

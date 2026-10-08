@@ -1,11 +1,14 @@
 import sys
 
+
 class InvalidParameterError(Exception):
     pass
+
 
 def CheckItem(item: str, itens: dict) -> None:
     if item in itens:
         raise InvalidParameterError(f"Redundant item '{item}' - discarding")
+
 
 def items_quantity(items: dict) -> None:
     most = None
@@ -25,15 +28,16 @@ def items_quantity(items: dict) -> None:
     print(f"Item most abundant: {name_most} with quantity {most}")
     print(f"Item least abundant: {name_least} with quantity {least}")
 
-    
+
 if __name__ == "__main__":
-    itens = {}
+    itens: dict[str, int] = {}
 
     for arg in sys.argv[1:]:
         try:
             if ":" not in arg:
-                raise InvalidParameterError(f"Error - invalid parameter '{arg}'")
-            
+                raise InvalidParameterError
+            (f"Error - invalid parameter '{arg}'")
+
             name, qtd = arg.split(":")
             CheckItem(name, itens)
             itens[name] = int(qtd)
@@ -50,7 +54,8 @@ if __name__ == "__main__":
     print(f"Total quantity of {len(itens)} items: {total}")
 
     for item in itens:
-        print(f"Item {item} representes {round(itens[item] * 100 / total, 1)}%")
+        print(f"Item {item} representes\
+            {round(itens[item] * 100 / total, 1)}%")
 
     items_quantity(itens)
 
