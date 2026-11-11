@@ -2,6 +2,7 @@ import sys
 
 
 def process(numbers) -> None:
+    print(f"Scores processed: {numbers}")
     print(f"Total players: {len(numbers)}")
     print(f"Total score: {sum(numbers)}")
     print(f"Average score: {sum(numbers) / len(numbers)}")
@@ -16,6 +17,7 @@ def message() -> str:
 
 
 if __name__ == "__main__":
+    print("=== Player Score Analytics ===")
     if len(sys.argv) < 2:
         print(message())
     else:

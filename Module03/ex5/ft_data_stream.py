@@ -8,10 +8,10 @@ def gen_event(
 ) -> Generator[tuple[str, str], None, None]:
 
     while True:
-        yield tuple([
+        yield (
             random.choice(players),
             random.choice(actions)
-        ])
+        )
 
 
 def show_events(players: list, actions: list) -> None:
@@ -43,13 +43,16 @@ def consume_event(
         yield event
 
 
-players = ["Vitor", "Marcus", "João"]
-actions = ["Lutar", "Conversar", "Correr", "Cagar", "Fumar"]
+if __name__ == "__main__":
+    print("=== Game Data Stream Processor ===")
+    players = ["Vitor", "Marcus", "João"]
+    actions = ["Fight", "Talk", "Run", "Pee",
+               "Smoke", "Drink", "Sleep", "Eat", "Code"]
 
-show_events(players, actions)
+    show_events(players, actions)
 
-events = create_list_of_events(players, actions)
+    events = create_list_of_events(players, actions)
 
-for event in consume_event(events):
-    print(f"Got event from list: {event}")
-    print(f"Remains in list: {events}")
+    for event in consume_event(events):
+        print(f"Got event from list: {event}")
+        print(f"Remains in list: {events}")

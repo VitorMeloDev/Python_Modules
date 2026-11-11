@@ -3,9 +3,11 @@ import math
 
 def get_player_pos() -> tuple:
     try:
-        x = float(input("Enter x coordinate: "))
-        y = float(input("Enter y coordinate: "))
-        z = float(input("Enter z coordinate: "))
+        coordinate = input("Enter coordinates (x, y, z) separated by commas: ")
+        x_str, y_str, z_str = coordinate.split(",")
+        x = float(x_str)
+        y = float(y_str)
+        z = float(z_str)
         return (x, y, z)
     except ValueError:
         print("Invalid input. Please enter valid numbers.")
@@ -28,7 +30,7 @@ if __name__ == "__main__":
     print(f"Got a first tuple: {coordinate}")
     print(f"It includes: \
         X={coordinate[0]}, Y={coordinate[1]}, Z={coordinate[2]}")
-    print(f"Distance from origin: \
+    print(f"Distance to center: \
           {calculate_distance((0, 0, 0), coordinate):.4f}")
 
     print()
