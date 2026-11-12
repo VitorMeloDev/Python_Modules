@@ -1,13 +1,13 @@
 import sys
 
 
-class InvalidParameterError(Exception):
+class ParameterError(Exception):
     pass
 
 
 def CheckItem(item: str, itens: dict) -> None:
     if item in itens:
-        raise InvalidParameterError(f"Redundant item '{item}' - discarding")
+        raise ParameterError(f"Redundant item '{item}' - discarding")
 
 
 def items_quantity(items: dict) -> None:
@@ -35,15 +35,14 @@ if __name__ == "__main__":
     for arg in sys.argv[1:]:
         try:
             if ":" not in arg:
-                raise InvalidParameterError
-            (f"Error - invalid parameter '{arg}'")
+                raise ParameterError(f"Error - invalid parameter '{arg}'")
 
             name, qtd = arg.split(":")
             CheckItem(name, itens)
             itens[name] = int(qtd)
         except ValueError as error:
             print(f"Quantity error for '{name}': {error}")
-        except InvalidParameterError as error:
+        except ParameterError as error:
             print(f"{error}")
 
     print(f"Got inventory: {itens}")

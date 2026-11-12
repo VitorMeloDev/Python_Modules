@@ -52,7 +52,7 @@ if __name__ == "__main__":
     show_events(players, actions)
 
     events = create_list_of_events(players, actions)
-
+    print(f"Built list of {len(events)} events: {events}")
     for event in consume_event(events):
         print(f"Got event from list: {event}")
         print(f"Remains in list: {events}")

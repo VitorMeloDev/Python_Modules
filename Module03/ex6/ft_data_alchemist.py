@@ -21,7 +21,7 @@ if __name__ == "__main__":
     only_cap = [player for player in players if player[0].isupper()]
     print(f"New list of capitalized names only: {only_cap}")
     print()
-    score = {player: random.randint(0, 1000) for player in players}
+    score = {player: random.randint(0, 1000) for player in capitalized}
     print(f"Score dict: {score}")
     avg = sum(score.values()) / len(score)
     print(f"Average score is {avg:.2f}")
