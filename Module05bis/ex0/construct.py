@@ -29,7 +29,9 @@ def check_laboratory() -> None:
         print(f"Virtual Environment: {env_name}")
         print(f"Environment Path: {sys.prefix}")
         print("\nSUCCESS: You are working in an isolated environment!")
-        print("Safe to install reagents without affecting the global system.\n")
+        print(
+            "Safe to install reagents without affecting the global system.\n"
+        )
         print("Reagent installation path:")
         print(reagent_path)
 

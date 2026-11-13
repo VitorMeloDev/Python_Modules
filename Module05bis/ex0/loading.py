@@ -1,22 +1,22 @@
 import importlib
-from typing import Any
 
 
 def check_reagents() -> None:
-    """Checks for required reagents (pandas, numpy) and prints status/versions."""
+    """Check for the required reagents and report their versions."""
     print("REAGENT STATUS: Loading reagents...\n")
     print("Checking dependencies:")
 
-    dependencies = ["pandas", "numpy"]
+    dependencies: dict[str, str] = {
+        "pandas": "Data manipulation",
+        "numpy": "Numerical computation",
+    }
     missing: list[str] = []
-    loaded_modules: dict[str, Any] = {}
 
-    for dep in dependencies:
+    for dep, purpose in dependencies.items():
         try:
             mod = importlib.import_module(dep)
             version = getattr(mod, "__version__", "unknown")
-            print(f"  [OK] {dep} ({version})")
-            loaded_modules[dep] = mod
+            print(f"  [OK] {dep} ({version}) - {purpose} ready")
         except ImportError:
             print(f"  [MISSING] {dep}")
             missing.append(dep)
@@ -32,11 +32,14 @@ def check_reagents() -> None:
         return
 
     print("pip vs Poetry:")
-    print("  Data manipulation ready")
-    print("  Numerical computation ready")
-    print("\nrequirements.txt declares what to install; pip resolves it at install time.")
-    print("pyproject.toml declares the same constraints, and Poetry pins the resolved")
-    print("versions in poetry.lock so every install is identical.\n")
+    print(
+        "requirements.txt declares constraints; pip resolves "
+        "compatible versions when installed."
+    )
+    print(
+        "pyproject.toml uses the same constraints. Poetry can save "
+        "exact versions in poetry.lock for repeatable installs.\n"
+    )
     print("All reagents present and accounted for.")
 
 
