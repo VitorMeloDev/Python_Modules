@@ -1,5 +1,6 @@
-from typing import Any 
+from typing import Any
 import abc
+
 
 class DataProcessor(abc.ABC):
     def __init__(self) -> None:
@@ -20,13 +21,17 @@ class DataProcessor(abc.ABC):
         else:
             raise IndexError("List does not exist or is empty!")
 
+
 class NumericProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         if isinstance(data, (int, float)) and not isinstance(data, bool):
             return True
 
         if isinstance(data, list) and len(data) > 0:
-            return all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in data)
+            return all(
+                isinstance(x, (int, float)) and not isinstance(x, bool)
+                for x in data
+            )
 
         return False
 
@@ -38,18 +43,24 @@ class NumericProcessor(DataProcessor):
                 self.storage.append((self.rank_counter, str(item)))
                 self.rank_counter += 1
         else:
-            raise ValueError(f"Invalid data: {data}")
+            raise ValueError(
+                f"Invalid data: {data}"
+            )
+
 
 class TextProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         if isinstance(data, str) and not isinstance(data, bool):
             return True
-        
+
         if isinstance(data, list) and len(data) > 0:
-            return all(isinstance(x, str) and not isinstance(x, bool) for x in data)
-        
+            return all(
+                isinstance(x, str) and not isinstance(x, bool)
+                for x in data
+            )
+
         return False
-    
+
     def ingest(self, data: str | list[str]) -> None:
         if not self.validate(data):
             raise ValueError(f"Invalid data: {data}")
@@ -59,13 +70,17 @@ class TextProcessor(DataProcessor):
             self.storage.append((self.rank_counter, item))
             self.rank_counter += 1
 
+
 class LogProcessor(DataProcessor):
     def _is_valid_log_dict(self, d: Any) -> bool:
         if not isinstance(d, dict) or not d:
             return False
-        
-        return all(isinstance(k, str) and isinstance(v, str) for k, v in d.items())
-    
+
+        return all(
+            isinstance(k, str) and isinstance(v, str)
+            for k, v in d.items()
+        )
+
     def validate(self, data: Any) -> bool:
         if self._is_valid_log_dict(data):
             return True
@@ -86,6 +101,7 @@ class LogProcessor(DataProcessor):
             self.storage.append((self.rank_counter, formatted_log))
             self.rank_counter += 1
 
+
 if __name__ == "__main__":
     print("=== Code Nexus - Data Processor ===")
 
@@ -100,7 +116,7 @@ if __name__ == "__main__":
 
     print("\nTest invalid ingestion of string 'foo' without prior validation:")
     try:
-        # mypy vai alertar aqui por passar str em um método que espera int/float.
+        # mypy alerta por passar str em um método que espera int/float.
         # Isso é PROPOSITAL conforme a especificação do exercício!
         num_proc.ingest("foo")  # type: ignore[arg-type]
     except ValueError as e:

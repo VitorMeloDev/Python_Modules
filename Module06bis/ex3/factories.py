@@ -31,7 +31,7 @@ class FlameFactory(CreatureFactory):
 
 
 class TransformCreatureFactory(CreatureFactory):
-    """Fábrica para a família com capacidade de transformação (Shiftling / Morphagon)."""
+    """Fábrica para Shiftling e Morphagon, com capacidade de transformação."""
 
     def create_base(self) -> Creature:
         return Shiftling()

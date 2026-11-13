@@ -3,7 +3,8 @@ from ex3.creatures import Creature, TransformCapability
 
 
 class InvalidStrategyError(Exception):
-    """Exceção levantada quando uma estratégia recebe uma entidade incompatível."""
+    """Indica que uma entidade é incompatível com a estratégia."""
+
     pass
 
 
@@ -25,21 +26,25 @@ class NormalStrategy(BattleStrategy):
 
     def act(self, creature: Creature) -> None:
         if not self.is_valid(creature):
-            raise InvalidStrategyError(f"Invalid Creature '{creature.name}' for this normal strategy")
+            raise InvalidStrategyError(
+                f"Invalid Creature '{creature.name}' "
+                "for this normal strategy"
+            )
         print(creature.attack())
 
 
 class AggressiveStrategy(BattleStrategy):
     def is_valid(self, creature: Creature) -> bool:
-        # A validação ocorre contra a Capability, nunca contra a classe concreta
+        # A validação usa a capability, nunca a classe concreta.
         return isinstance(creature, TransformCapability)
 
     def act(self, creature: Creature) -> None:
-        if not self.is_valid(creature):
-            raise InvalidStrategyError(f"Invalid Creature '{creature.name}' for this aggressive strategy")
-        
-        # Casting seguro pois a validação is_valid garantiu o tipo
-        tc_creature = creature  # type: ignore
-        print(tc_creature.transform())
+        if not isinstance(creature, TransformCapability):
+            raise InvalidStrategyError(
+                f"Invalid Creature '{creature.name}' "
+                "for this aggressive strategy"
+            )
+
+        print(creature.transform())
         print(creature.attack())
-        print(tc_creature.revert())
+        print(creature.revert())

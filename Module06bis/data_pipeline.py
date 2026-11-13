@@ -1,5 +1,6 @@
-from typing import Any, Protocol 
+from typing import Any, Protocol
 import abc
+
 
 class DataProcessor(abc.ABC):
     def __init__(self) -> None:
@@ -20,13 +21,17 @@ class DataProcessor(abc.ABC):
         else:
             raise IndexError("List does not exist or is empty!")
 
+
 class NumericProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         if isinstance(data, (int, float)) and not isinstance(data, bool):
             return True
 
         if isinstance(data, list) and len(data) > 0:
-            return all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in data)
+            return all(
+                isinstance(x, (int, float)) and not isinstance(x, bool)
+                for x in data
+            )
 
         return False
 
@@ -38,18 +43,24 @@ class NumericProcessor(DataProcessor):
                 self.storage.append((self.rank_counter, str(item)))
                 self.rank_counter += 1
         else:
-            raise ValueError(f"Invalid data: {data}")
+            raise ValueError(
+                f"Invalid data: {data}"
+            )
+
 
 class TextProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         if isinstance(data, str) and not isinstance(data, bool):
             return True
-        
+
         if isinstance(data, list) and len(data) > 0:
-            return all(isinstance(x, str) and not isinstance(x, bool) for x in data)
-        
+            return all(
+                isinstance(x, str) and not isinstance(x, bool)
+                for x in data
+            )
+
         return False
-    
+
     def ingest(self, data: str | list[str]) -> None:
         if not self.validate(data):
             raise ValueError(f"Invalid data: {data}")
@@ -59,13 +70,17 @@ class TextProcessor(DataProcessor):
             self.storage.append((self.rank_counter, item))
             self.rank_counter += 1
 
+
 class LogProcessor(DataProcessor):
     def _is_valid_log_dict(self, d: Any) -> bool:
         if not isinstance(d, dict) or not d:
             return False
-        
-        return all(isinstance(k, str) and isinstance(v, str) for k, v in d.items())
-    
+
+        return all(
+            isinstance(k, str) and isinstance(v, str)
+            for k, v in d.items()
+        )
+
     def validate(self, data: Any) -> bool:
         if self._is_valid_log_dict(data):
             return True
@@ -86,20 +101,57 @@ class LogProcessor(DataProcessor):
             self.storage.append((self.rank_counter, formatted_log))
             self.rank_counter += 1
 
+
 class ExportPlugin(Protocol):
     def process_output(self, data: list[tuple[int, str]]) -> None:
         pass
 
-class CSVExportPlugin():
+
+_JSON_ESCAPES: dict[str, str] = {
+    '"': '\\"',
+    "\\": "\\\\",
+    "\b": "\\b",
+    "\f": "\\f",
+    "\n": "\\n",
+    "\r": "\\r",
+    "\t": "\\t",
+}
+
+
+def _escape_csv_field(value: str) -> str:
+    if any(char in value for char in (",", '"', "\r", "\n")):
+        return '"' + value.replace('"', '""') + '"'
+    return value
+
+
+def _escape_json_string(value: str) -> str:
+    escaped: list[str] = []
+    for char in value:
+        replacement = _JSON_ESCAPES.get(char)
+        if replacement is not None:
+            escaped.append(replacement)
+        elif ord(char) < 0x20:
+            escaped.append(f"\\u{ord(char):04x}")
+        else:
+            escaped.append(char)
+    return "".join(escaped)
+
+
+class CSVExportPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
         print("CSV Output:")
-        print(",".join([item for _, item in data]))
+        print(",".join(_escape_csv_field(item) for _, item in data))
 
-class JSONExportPlugin():
+
+class JSONExportPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
-            pairs = [f'"item_{rank}": "{text}"' for rank, text in data]
-            print("JSON Output:")
-            print("{" + ", ".join(pairs) + "}")
+        pairs = [
+            f'"item_{rank}": "{_escape_json_string(text)}"'
+            for rank, text in data
+        ]
+        print("JSON Output:")
+        print("{" + ", ".join(pairs) + "}")
+
 
 class DataStream:
     def __init__(self) -> None:
@@ -119,7 +171,10 @@ class DataStream:
                     break
 
             if not processed:
-                print(f"DataStream error - Can't process element in stream: {data}")
+                print(
+                    "DataStream error - Can't process element in stream: "
+                    f"{data}"
+                )
 
     def print_processors_stats(self) -> None:
         print("== DataStream statistics ==")
@@ -135,16 +190,15 @@ class DataStream:
             )
 
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
+        limit = max(nb, 0)
         for proc in self.processors:
-            output_list: list[tuple[int, str]] = []
-            
-            for _ in range(nb):
-                if not proc.storage:
-                    break
-                output_list.append(proc.output())
-            
+            output_list = proc.storage[:limit]
             if output_list:
+                item_count = len(output_list)
                 plugin.process_output(output_list)
+                for _ in range(item_count):
+                    proc.output()
+
 
 if __name__ == "__main__":
     print("=== Code Nexus - Data Pipeline ===")
@@ -165,12 +219,22 @@ if __name__ == "__main__":
     stream.register_processor(data_str)
     stream.register_processor(data_log)
 
-    data_list = ["Hello world", [3.14, -1, 2.71],
-                 [{"log_level": "WARNING", "log_message":
-                  "Telnet access! Use ssh instead"},
-                  {"log_level": "INFO", "log_message":
-                   "User wil isconnected"}], 42,
-                 ["Hi", "five"]]
+    data_list = [
+        "Hello world",
+        [3.14, -1, 2.71],
+        [
+            {
+                "log_level": "WARNING",
+                "log_message": "Telnet access! Use ssh instead",
+            },
+            {
+                "log_level": "INFO",
+                "log_message": "User wil isconnected",
+            },
+        ],
+        42,
+        ["Hi", "five"],
+    ]
     print("Send first batch of data on stream:", data_list)
     print()
 
@@ -187,11 +251,19 @@ if __name__ == "__main__":
     stream.print_processors_stats()
     print()
 
-    data_list_2 = [21, ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
-                   [{'log_level': 'ERROR', 'log_message': '500 server crash'},
-                    {'log_level': 'NOTICE', 'log_message':
-                    'Certificate expires in 10 days'}],
-                   [32, 42, 64, 84, 128, 168], 'World hello']
+    data_list_2 = [
+        21,
+        ["I love AI", "LLMs are wonderful", "Stay healthy"],
+        [
+            {"log_level": "ERROR", "log_message": "500 server crash"},
+            {
+                "log_level": "NOTICE",
+                "log_message": "Certificate expires in 10 days",
+            },
+        ],
+        [32, 42, 64, 84, 128, 168],
+        "World hello",
+    ]
     print("Send another batch of data:", data_list_2)
     print()
 

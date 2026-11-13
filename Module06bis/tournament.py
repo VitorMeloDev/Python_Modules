@@ -1,8 +1,19 @@
-from ex3.factories import CreatureFactory, FlameFactory, TransformCreatureFactory
-from ex4.strategies import BattleStrategy, NormalStrategy, AggressiveStrategy, InvalidStrategyError
+from ex3.factories import (
+    CreatureFactory,
+    FlameFactory,
+    TransformCreatureFactory,
+)
+from ex4.strategies import (
+    AggressiveStrategy,
+    BattleStrategy,
+    InvalidStrategyError,
+    NormalStrategy,
+)
 
 
-def run_tournament(opponents: list[tuple[CreatureFactory, BattleStrategy]]) -> None:
+def run_tournament(
+    opponents: list[tuple[CreatureFactory, BattleStrategy]],
+) -> None:
     print("*** Tournament ***")
     print(f"{len(opponents)} opponents involved")
 
@@ -31,7 +42,7 @@ def run_tournament(opponents: list[tuple[CreatureFactory, BattleStrategy]]) -> N
 def main() -> None:
     flame_fac = FlameFactory()
     trans_fac = TransformCreatureFactory()
-    
+
     norm_strat = NormalStrategy()
     agg_strat = AggressiveStrategy()
 

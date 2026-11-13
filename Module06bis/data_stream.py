@@ -1,5 +1,6 @@
-from typing import Any 
+from typing import Any
 import abc
+
 
 class DataProcessor(abc.ABC):
     def __init__(self) -> None:
@@ -20,13 +21,17 @@ class DataProcessor(abc.ABC):
         else:
             raise IndexError("List does not exist or is empty!")
 
+
 class NumericProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         if isinstance(data, (int, float)) and not isinstance(data, bool):
             return True
 
         if isinstance(data, list) and len(data) > 0:
-            return all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in data)
+            return all(
+                isinstance(x, (int, float)) and not isinstance(x, bool)
+                for x in data
+            )
 
         return False
 
@@ -38,18 +43,24 @@ class NumericProcessor(DataProcessor):
                 self.storage.append((self.rank_counter, str(item)))
                 self.rank_counter += 1
         else:
-            raise ValueError(f"Invalid data: {data}")
+            raise ValueError(
+                f"Invalid data: {data}"
+            )
+
 
 class TextProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         if isinstance(data, str) and not isinstance(data, bool):
             return True
-        
+
         if isinstance(data, list) and len(data) > 0:
-            return all(isinstance(x, str) and not isinstance(x, bool) for x in data)
-        
+            return all(
+                isinstance(x, str) and not isinstance(x, bool)
+                for x in data
+            )
+
         return False
-    
+
     def ingest(self, data: str | list[str]) -> None:
         if not self.validate(data):
             raise ValueError(f"Invalid data: {data}")
@@ -59,13 +70,17 @@ class TextProcessor(DataProcessor):
             self.storage.append((self.rank_counter, item))
             self.rank_counter += 1
 
+
 class LogProcessor(DataProcessor):
     def _is_valid_log_dict(self, d: Any) -> bool:
         if not isinstance(d, dict) or not d:
             return False
-        
-        return all(isinstance(k, str) and isinstance(v, str) for k, v in d.items())
-    
+
+        return all(
+            isinstance(k, str) and isinstance(v, str)
+            for k, v in d.items()
+        )
+
     def validate(self, data: Any) -> bool:
         if self._is_valid_log_dict(data):
             return True
@@ -86,6 +101,7 @@ class LogProcessor(DataProcessor):
             self.storage.append((self.rank_counter, formatted_log))
             self.rank_counter += 1
 
+
 class DataStream:
     def __init__(self) -> None:
         self.processors: list[DataProcessor] = []
@@ -104,7 +120,10 @@ class DataStream:
                     break
 
             if not processed:
-                print(f"DataStream error - Can't process element in stream: {data}")
+                print(
+                    "DataStream error - Can't process element in stream: "
+                    f"{data}"
+                )
 
     def print_processors_stats(self) -> None:
         print("== DataStream statistics ==")
@@ -118,6 +137,7 @@ class DataStream:
                 f"{name}: total {proc.rank_counter} items processed, "
                 f"remaining {len(proc.storage)} on processor"
             )
+
 
 if __name__ == "__main__":
     print("=== Code Nexus - Data Stream ===")
@@ -134,12 +154,22 @@ if __name__ == "__main__":
     data_int = NumericProcessor()
     stream.register_processor(data_int)
 
-    data_list = ["Hello world", [3.14, -1, 2.71],
-                 [{"log_level": "WARNING", "log_message":
-                  "Telnet access! Use ssh instead"},
-                  {"log_level": "INFO", "log_message":
-                   "User wil isconnected"}], 42,
-                 ["Hi", "five"]]
+    data_list = [
+        "Hello world",
+        [3.14, -1, 2.71],
+        [
+            {
+                "log_level": "WARNING",
+                "log_message": "Telnet access! Use ssh instead",
+            },
+            {
+                "log_level": "INFO",
+                "log_message": "User wil isconnected",
+            },
+        ],
+        42,
+        ["Hi", "five"],
+    ]
     print("Send first batch of data on stream:", data_list)
     stream.process_stream(data_list)
     stream.print_processors_stats()
@@ -155,8 +185,10 @@ if __name__ == "__main__":
     stream.print_processors_stats()
     print()
 
-    print("Consume some elements from the data"
-          "processors: Numeric 3, Text 2, Log 1")
+    print(
+        "Consume some elements from the data"
+        " processors: Numeric 3, Text 2, Log 1"
+    )
     for _ in range(3):
         rank, value = data_int.output()
     for _ in range(2):
