@@ -5,7 +5,9 @@ def process_file(file_name: str) -> str:
     print(f"Accessing file '{file_name}'")
 
     try:
-        content = open(file_name, "r").read()
+        file = open(file_name, "r")
+        content = file.read()
+        file.close()
         print("---")
         print(content.strip())
         print("---")
@@ -34,8 +36,9 @@ def save_file(content: str) -> None:
     if new_file:
         print(f"Saving data to '{new_file}'")
         try:
-            with open(new_file, "w") as file:
-                file.write(content)
+            file = open(new_file, "w")
+            file.write(content)
+            file.close()
             print(f"Data saved in file '{new_file}'.")
         except (PermissionError, OSError) as error:
             print(f"Error saving file '{new_file}': {error}")

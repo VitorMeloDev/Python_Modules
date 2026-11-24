@@ -8,7 +8,7 @@ def save_file(content: str) -> None:
     print("Enter new file name(or empty): ")
 
     new_file = sys.stdin.readline()
-    new_file = new_file[:-1]
+    new_file = new_file.rstrip("\r\n")
 
     if new_file:
         print(f"Saving data to '{new_file}'")
@@ -30,22 +30,16 @@ def save_file(content: str) -> None:
 def process_file(file_name: str) -> str:
     print(f"Accessing file '{file_name}'\n---")
 
-    content = ""
-
     try:
         file = open(file_name)
         content = file.read()
         file.close()
 
         print(content)
-
-        new_content = ""
-        file = open(file_name)
-
-        for line in file:
-            new_content += line[:-1] + "#\n"
-
-        file.close()
+        lines = content.splitlines()
+        new_content = "\n".join(f"{line}#" for line in lines)
+        if content.endswith(("\n", "\r")):
+            new_content += "\n"
 
         print("\n---")
         print(f"File '{file_name}' closed")
